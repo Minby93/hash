@@ -11,7 +11,7 @@ def hash_message_gost(message: bytes, key: bytes, block_size: int = 8) -> bytes:
     message = pad(message)
     blocks = [message[i:i + block_size] for i in range(0, len(message), block_size)]
     h_prev = bytes([0] * block_size)
-    # H(i) = E(H(i-1))(M(i)) ^ M(i)
+    # H(i) = E(H(i-1))(M(i)) ⊕ M(i)
     for block in blocks:
         encrypted = gost_encrypt_block(h_prev, key)
         intermediate = int.from_bytes(encrypted, 'little') ^ int.from_bytes(block, 'little')
